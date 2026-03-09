@@ -153,6 +153,22 @@ Please visit your Seva Kendra to upload an updated copy.
 — Digi SetuSeva Team
         `.trim(),
     },
+    password_reset: {
+        subject: '🔑 Digi SetuSeva — Password Reset Code',
+        body: (vars) => `
+Namaste ${vars.name},
+
+Your password reset code is:
+
+    ${vars.otp}
+
+This code is valid for 15 minutes. Do not share it with anyone.
+
+If you did not request this, please ignore this email.
+
+— Digi SetuSeva Team
+        `.trim(),
+    },
 };
 
 // ─── Send Notification ──────────────────────────────

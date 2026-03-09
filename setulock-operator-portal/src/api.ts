@@ -39,6 +39,10 @@ export const authAPI = {
         village?: string; taluka?: string; district?: string;
     }) => api.post('/auth/register', data),
     me: () => api.get('/auth/me'),
+    forgotPassword: (email: string) =>
+        api.post('/auth/forgot-password', { email }),
+    resetPassword: (email: string, otp: string, new_password: string) =>
+        api.post('/auth/reset-password', { email, otp, new_password }),
 };
 
 // ─── Families ────────────────────────────────────────
