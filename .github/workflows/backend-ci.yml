@@ -1,0 +1,46 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ "main", "staging" ]
+    paths:
+      - 'setulock-backend/**'
+  pull_request:
+    branches: [ "main", "staging" ]
+    paths:
+      - 'setulock-backend/**'
+
+defaults:
+  run:
+    working-directory: ./setulock-backend
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './setulock-backend/package-lock.json'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint --if-present
+      
+    - name: Run automated tests
+      run: npm test --if-present
+      env:
+        NODE_ENV: test
+        # Note: Set required secrets in GitHub repo settings, do NOT hardcode them.
+        ENCRYPTION_MASTER_KEY: ${{ secrets.TEST_ENCRYPTION_MASTER_KEY }}
